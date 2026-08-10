@@ -11,9 +11,6 @@ services:
       DB_PASSWORD: ${DB_PASSWORD:-SecurePassword123!}
       MM_SERVICESETTINGS_SITEURL: ${MATTERMOST_URL:-http://localhost:8065}
       MM_SQLSETTINGS_DATASOURCE: "postgres://postgres:${DB_PASSWORD:-SecurePassword123!}@postgres:5432/mattermost?sslmode=disable"
-    depends_on:
-      postgres:
-        condition: service_healthy
     volumes:
       - mattermost_data:/mattermost/data
       - mattermost_config:/mattermost/config
