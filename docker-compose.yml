@@ -4,9 +4,9 @@ services:
     ports:
       - "8065:8065"
     environment:
-      DB_HOST: postgres
-      DB_PORT_NUMBER: 5432
-      DB_NAME: mattermost
+      DB_HOST: localhost
+      DB_PORT_NUMBER: 5435
+      DB_NAME: postgres
       DB_USER: postgres
       DB_PASSWORD: ${DB_PASSWORD:-SecurePassword123!}
       MM_SERVICESETTINGS_SITEURL: ${MATTERMOST_URL:-http://localhost:8065}
