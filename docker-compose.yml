@@ -15,6 +15,22 @@ services:
       - mattermost_data:/mattermost/data
       - mattermost_config:/mattermost/config
     restart: unless-stopped
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.middlewares.gzip.compress=true'
+      - 'traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https'
+      - 'traefik.http.routers.http-mattermost-staging.entryPoints=http'
+      - 'traefik.http.routers.http-mattermost-staging.middlewares=redirect-to-https'
+      - 'traefik.http.routers.http-mattermost-staging.rule=Host(`mattermost.cernovapps.com`) && PathPrefix(`/`)'
+      - 'traefik.http.routers.http-mattermost-staging.service=http-mattermost-staging'
+      - 'traefik.http.routers.https-mattermost-staging.entryPoints=https'
+      - 'traefik.http.routers.https-mattermost-staging.middlewares=gzip'
+      - 'traefik.http.routers.https-mattermost-staging.rule=Host(`mattermost.cernovapps.com`) && PathPrefix(`/`)'
+      - 'traefik.http.routers.https-mattermost-staging.service=https-mattermost-staging'
+      - 'traefik.http.routers.https-mattermost-staging.tls.certresolver=letsencrypt'
+      - 'traefik.http.routers.https-mattermost-staging.tls=true'
+      - 'traefik.http.services.http-mattermost-staging.loadbalancer.server.port=4173'
+      - 'traefik.http.services.https-mattermost-staging.loadbalancer.server.port=4173'
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8065/api/v4/system/ping"]
       interval: 30s
